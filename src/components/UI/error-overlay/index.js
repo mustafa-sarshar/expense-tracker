@@ -1,6 +1,5 @@
 import { View, Text } from "react-native";
 
-import GlobalStyles from "../../../assets/styles";
 import styles from "./styles";
 import CustomButtonUI from "../CustomButton";
 

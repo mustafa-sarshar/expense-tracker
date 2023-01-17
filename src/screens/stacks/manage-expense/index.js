@@ -54,7 +54,7 @@ function ManageExpenseStackScreen({ route, navigation }) {
         expenseCtx.updateExpense(expenseId, expenseData);
         await updateExpense(expenseId, expenseData);
       } else {
-        const expenseId = storeExpense(expenseData);
+        const expenseId = await storeExpense(expenseData);
         expenseCtx.addExpense({ ...expenseData, id: expenseId });
         navigation.goBack();
       }

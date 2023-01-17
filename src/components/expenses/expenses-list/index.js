@@ -10,15 +10,13 @@ function ExpensesListComponent({ expenses }) {
     return <ExpensesItemComponent {...itemData.item} />;
   }
 
-  console.log(expenses);
   return (
     <View style={styles.container}>
       <FlatList
         data={expenses}
         renderItem={renderExpenseItemHandler}
         keyExtractor={(item) => {
-          console.log("id -> ", item.id.toString());
-          return item.id.toString();
+          return item.id;
         }}
       />
     </View>

@@ -1,24 +1,34 @@
 import axios from "axios";
-
-const backendURL = "https://expense-tracker-31184-default-rtdb.firebaseio.com";
-const collectionName = "expenses";
+import firebaseConfigs from "../../../.firebaseConfigs.json";
 
 async function storeExpense(expenseData) {
-  await axios.post(`${backendURL}/${collectionName}.json`, expenseData);
+  const response = await axios.post(
+    `${firebaseConfigs.dbConfigs.url}/${firebaseConfigs.dbConfigs.collectionName}.json`,
+    expenseData
+  );
+  const { name } = response.data;
+  console.log(response.data);
+  return name;
 }
 
 async function fetchExpenses() {
-  const response = await axios.get(`${backendURL}/${collectionName}.json`);
+  const response = await axios.get(
+    `${firebaseConfigs.dbConfigs.url}/${firebaseConfigs.dbConfigs.collectionName}.json`
+  );
   const expensesFetched = [];
 
-  for (const key in response.data) {
-    const expense = {
-      id: key,
-      amount: response.data[key].amount,
-      date: new Date(response.data[key].date),
-      description: response.data[key].description,
-    };
-    expensesFetched.push(expense);
+  console.log("Response Fetch:", response.data);
+
+  if (response.data) {
+    for (const key in response.data) {
+      const expense = {
+        id: key,
+        amount: response.data[key].amount,
+        date: new Date(response.data[key].date),
+        description: response.data[key].description,
+      };
+      expensesFetched.push(expense);
+    }
   }
 
   return expensesFetched;
@@ -26,13 +36,15 @@ async function fetchExpenses() {
 
 async function updateExpense(expenseId, expenseData) {
   await axios.put(
-    `${backendURL}/${collectionName}/${expenseId}.json`,
+    `${firebaseConfigs.dbConfigs.url}/${firebaseConfigs.dbConfigs.collectionName}/${expenseId}.json`,
     expenseData
   );
 }
 
 async function deleteExpense(expenseId) {
-  await axios.delete(`${backendURL}/${collectionName}/${expenseId}.json`);
+  await axios.delete(
+    `${firebaseConfigs.dbConfigs.url}/${firebaseConfigs.dbConfigs.collectionName}/${expenseId}.json`
+  );
 }
 
 export { storeExpense, fetchExpenses, updateExpense, deleteExpense };
